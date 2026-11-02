@@ -1,6 +1,6 @@
 import { Post } from "@/interfaces/post";
 import fs from "fs";
-import matter from "gray-matter";
+import parseFrontMatter from "./front-matter";
 import { join } from "path";
 
 const postsDirectory = join(process.cwd(), "_posts");
@@ -13,7 +13,7 @@ export function getPostBySlug(slug: string) {
   const realSlug = slug.replace(/\.md$/, "");
   const fullPath = join(postsDirectory, `${realSlug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+  const { data, content } = parseFrontMatter(fileContents);
 
   return { ...data, description: realSlug, content } as Post;
 }
